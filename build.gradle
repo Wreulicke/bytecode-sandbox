@@ -1,0 +1,50 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: 'com.diffplug.gradle.spotless'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+version = '1.0'
+
+tasks.withType(AbstractCompile) each {
+    it.options.encoding = "UTF-8"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.0.0'
+    }
+}
+
+spotless {
+    java{
+        eclipseFormatFile project.file('eclipse-format-setting.xml')
+
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+    testCompile 'org.assertj:assertj-core:3.2.0'
+    compile group: 'org.javassist', name: 'javassist', version: '3.21.0-GA'
+    compile group: 'cglib', name: 'cglib', version: '3.2.5'
+    compile group: 'net.bytebuddy', name: 'byte-buddy-dep', version: '1.6.13'
+    compile group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.6.13'
+    
+    compile 'org.hibernate:hibernate-validator:5.4.0.Final'
+    
+    compileOnly  'org.projectlombok:lombok:1.16.14'
+    testCompileOnly   'org.projectlombok:lombok:1.16.14'
+}
+
