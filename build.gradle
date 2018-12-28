@@ -18,7 +18,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.0.0'
+        classpath 'com.diffplug.spotless:spotless-plugin-gradle:3.17.0'
         classpath "com.github.ben-manes:gradle-versions-plugin:0.20.0"
     }
 }
