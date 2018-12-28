@@ -18,5 +18,6 @@ bin/
 .classpath
 .factorypath
 .project
+*.class
 dump
 .idea/
