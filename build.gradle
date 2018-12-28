@@ -38,7 +38,7 @@ repositories {
 
 dependencies {
     compile 'org.javassist:javassist:3.24.1-GA'
-    compile 'cglib:cglib:3.2.5'
+    compile 'cglib:cglib:3.2.10'
     compile 'net.bytebuddy:byte-buddy-dep:1.9.6'
     compile 'net.bytebuddy:byte-buddy-agent:1.9.6'
     compile 'org.apache.bcel:bcel:6.2'
