@@ -37,17 +37,17 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.+'
-    testCompile 'org.assertj:assertj-core:3.2.0'
-    compile group: 'org.javassist', name: 'javassist', version: '3.24.1-GA'
-    compile group: 'cglib', name: 'cglib', version: '3.2.5'
-    compile group: 'net.bytebuddy', name: 'byte-buddy-dep', version: '1.6.13'
-    compile group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.6.13'
-    compile group: 'org.apache.bcel', name: 'bcel', version: '6.2'
-
+    compile 'org.javassist:javassist:3.24.1-GA'
+    compile 'cglib:cglib:3.2.5'
+    compile 'net.bytebuddy:byte-buddy-dep:1.9.6'
+    compile 'net.bytebuddy:byte-buddy-agent:1.9.6'
+    compile 'org.apache.bcel:bcel:6.2'
     compile 'org.hibernate:hibernate-validator:5.4.0.Final'
 
     compileOnly 'org.projectlombok:lombok:1.18.4'
     testCompileOnly 'org.projectlombok:lombok:1.18.4'
+
+    testCompile 'junit:junit:4.+'
+    testCompile 'org.assertj:assertj-core:3.11.1'
 }
 
