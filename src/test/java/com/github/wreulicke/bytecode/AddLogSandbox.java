@@ -1,6 +1,9 @@
 package com.github.wreulicke.bytecode;
 
-import static net.bytebuddy.matcher.ElementMatchers.*;
+import static net.bytebuddy.matcher.ElementMatchers.isAbstract;
+import static net.bytebuddy.matcher.ElementMatchers.isDeclaredBy;
+import static net.bytebuddy.matcher.ElementMatchers.isNative;
+import static net.bytebuddy.matcher.ElementMatchers.not;
 
 import java.io.IOException;
 import java.lang.annotation.ElementType;
@@ -20,16 +23,10 @@ import javassist.CtMethod;
 import javassist.NotFoundException;
 import net.bytebuddy.ByteBuddy;
 import net.bytebuddy.asm.Advice;
-import net.bytebuddy.asm.Advice.DynamicValue;
 import net.bytebuddy.asm.Advice.OnMethodEnter;
 import net.bytebuddy.asm.Advice.OnMethodExit;
 import net.bytebuddy.description.annotation.AnnotationDescription.Loadable;
-import net.bytebuddy.description.method.MethodDescription;
 import net.bytebuddy.description.method.ParameterDescription.InDefinedShape;
-import net.bytebuddy.description.type.TypeDescription;
-import net.bytebuddy.implementation.bytecode.StackManipulation;
-import net.bytebuddy.implementation.bytecode.assign.Assigner;
-import net.bytebuddy.implementation.bytecode.constant.TextConstant;
 import net.bytebuddy.matcher.ElementMatchers;
 
 public class AddLogSandbox {
@@ -53,7 +50,7 @@ public class AddLogSandbox {
   public void testAddLogMethodWithByteBuddy() throws IOException {
     byte[] bytes = new ByteBuddy().rebase(Some.class)
       .visit(Advice.withCustomMapping()
-        .bind(MethodName.class, new MethodNameBinder())
+        .bind(new MethodNameBinder())
         .to(ExampleAdvice.class)
         .on(ElementMatchers.isMethod()
           .and(isDeclaredBy(Some.class))
@@ -87,17 +84,25 @@ public class AddLogSandbox {
   public static @interface MethodName {
   }
 
-  class MethodNameBinder implements DynamicValue<MethodName> {
+  class MethodNameBinder implements Advice.OffsetMapping.Factory<MethodName> {
+
     @Override
-    public StackManipulation resolve(TypeDescription instrumentedType, MethodDescription instrumentedMethod, InDefinedShape target,
-      Loadable<MethodName> annotation, Assigner assigner, boolean initialized) {
-      if (target.getType()
-        .asErasure()
-        .isAssignableFrom(String.class)) {
-        String name = instrumentedMethod.getName();
-        return new TextConstant(name);
-      }
-      throw new IllegalStateException("not assignable type");
+    public Class<MethodName> getAnnotationType() {
+      return MethodName.class;
+    }
+
+    @Override
+    public Advice.OffsetMapping make(InDefinedShape target, Loadable<MethodName> annotation, AdviceType adviceType) {
+    	
+      return (instrumentedType, instrumentedMethod, assigner, argumentHandler, sort) -> {
+        if (target.getType()
+          .asErasure()
+          .isAssignableFrom(String.class)) {
+          String name = instrumentedMethod.getName();
+          return Advice.OffsetMapping.Target.ForStackManipulation.of(name);
+        }
+        throw new IllegalStateException("not assignable type");
+      };
     }
   }
 }
