@@ -5,9 +5,9 @@ import org.apache.bcel.classfile.JavaClass;
 import org.junit.Test;
 
 public class BCELSandbox {
-
-  @Test
-  public void test1() throws ClassNotFoundException {
-    JavaClass javaClass = Repository.lookupClass(BCELSandbox.class);
-  }
+	
+	@Test
+	public void test1() throws ClassNotFoundException {
+		JavaClass javaClass = Repository.lookupClass(BCELSandbox.class);
+	}
 }
